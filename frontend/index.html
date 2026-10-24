@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0b1020">
+  <meta name="description" content="SplitEase — make shared expenses simple.">
+  <title>SplitEase | Shared Expense Manager</title>
+  <link rel="stylesheet" href="./css/style.css">
+  <script src="./js/api.js" defer></script>
+  <script src="./js/app.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" data-page="dashboard" aria-label="SplitEase home">
+        <span class="brand-mark">S</span><span>SplitEase</span>
+      </a>
+
+      <div class="sidebar-label">WORKSPACE</div>
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" type="button" data-page="dashboard"><span class="nav-icon">▦</span>Dashboard</button>
+        <button class="nav-link" type="button" data-page="groups"><span class="nav-icon">♧</span>My Groups</button>
+        <button class="nav-link" type="button" data-page="expenses"><span class="nav-icon">↔</span>Expenses</button>
+        <button class="nav-link" type="button" data-page="settlements"><span class="nav-icon">⇄</span>Settle Up</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="profile-avatar">J</div>
+        <div class="profile-copy"><strong>Jai</strong><span>Expense Manager</span></div>
+        <span class="online-dot" title="Local demo mode"></span>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <button class="mobile-menu icon-button" id="mobile-menu" type="button" aria-label="Toggle navigation">☰</button>
+        <div class="breadcrumb"><span class="breadcrumb-dot"></span><span>Workspace</span><span class="breadcrumb-slash">/</span><strong id="breadcrumb-current">Dashboard</strong></div>
+        <div class="topbar-actions">
+          <span class="demo-chip"><span></span> Local demo</span>
+          <button class="button button-primary button-small" id="header-add-expense" type="button">＋ Add expense</button>
+        </div>
+      </header>
+
+      <section class="page active" id="page-dashboard" data-page-section="dashboard">
+        <div class="page-heading">
+          <div><p class="eyebrow">YOUR FINANCES, SIMPLIFIED</p><h1>Dashboard</h1><p class="page-subtitle">Welcome back, Jai! <span class="wave">👋</span> Keep your shared expenses organized.</p></div>
+          <button class="button button-primary" id="dashboard-add-expense" type="button">＋ Add expense</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon purple">₹</span><span class="stat-label">Total group spending</span></div><h2 id="total-spending">₹0.00</h2><p>Across all groups</p></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon green">↙</span><span class="stat-label">You are owed</span></div><h2 class="positive" id="total-owed">₹0.00</h2><p>Others owe you</p></article>
+          <article class="stat-card"><div class="stat-top"><span class="stat-icon red">↗</span><span class="stat-label">You owe</span></div><h2 class="negative" id="total-you-owe">₹0.00</h2><p>Your outstanding share</p></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel-heading"><div><h2>Your groups</h2><p>Manage expenses with your people.</p></div><button class="button button-secondary button-small" id="dashboard-new-group" type="button">＋ New group</button></div>
+            <div class="group-list compact-list" id="dashboard-groups"></div>
+          </section>
+          <section class="panel">
+            <div class="panel-heading"><div><h2>Recent expenses</h2><p>Your latest shared spending.</p></div><button class="text-button" type="button" data-page="expenses">View all <span>→</span></button></div>
+            <div class="expense-list compact-list" id="dashboard-expenses"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="page" id="page-groups" data-page-section="groups">
+        <div class="page-heading"><div><p class="eyebrow">YOUR PEOPLE</p><h1>My Groups</h1><p class="page-subtitle">Trips, hostel expenses, projects — all in one place.</p></div><button class="button button-primary" id="header-add-group" type="button">＋ New group</button></div>
+        <section class="panel"><div class="panel-heading"><div><h2>All groups</h2><p id="groups-caption">Manage your shared expenses.</p></div><span class="count-chip" id="group-count">0 groups</span></div><div class="group-list" id="groups-list"></div></section>
+      </section>
+
+      <section class="page" id="page-expenses" data-page-section="expenses">
+        <div class="page-heading"><div><p class="eyebrow">FOLLOW THE MONEY</p><h1>Expenses</h1><p class="page-subtitle">Every shared cost, clearly accounted for.</p></div><button class="button button-primary" id="expenses-add-expense" type="button">＋ Add expense</button></div>
+        <section class="panel"><div class="panel-heading"><div><h2>All expenses</h2><p>Track who paid and how the cost is split.</p></div><select class="select-control" id="expense-filter" aria-label="Filter expenses"><option value="all">All groups</option></select></div><div class="expense-list" id="expenses-list"></div></section>
+      </section>
+
+      <section class="page" id="page-settlements" data-page-section="settlements">
+        <div class="page-heading"><div><p class="eyebrow">SQUARE THINGS UP</p><h1>Settle up</h1><p class="page-subtitle">A simple view of who owes whom.</p></div></div>
+        <div class="settlement-summary" id="settlement-summary"></div>
+        <section class="panel"><div class="panel-heading"><div><h2>Suggested settlements</h2><p>Settle balances to close out shared expenses.</p></div></div><div id="settlements-list"></div></section>
+        <p class="fine-print">Balances are calculated from the expenses saved in this browser. No real payments are processed.</p>
+      </section>
+
+      <footer class="app-footer"><span>SplitEase</span><span>Shared spending, minus the awkward math.</span></footer>
+    </main>
+  </div>
+
+  <div class="modal-overlay hidden" id="group-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="group-modal-title">
+      <div class="modal-heading"><div><p class="eyebrow">GET STARTED</p><h2 id="group-modal-title">Create a group</h2><p class="modal-subtitle">Bring everyone sharing expenses together.</p></div><button class="icon-button close-button" id="close-modal" type="button" aria-label="Close dialog">×</button></div>
+      <form id="group-form">
+        <label for="group-name">Group name</label><input id="group-name" name="groupName" type="text" placeholder="e.g. Goa Trip" maxlength="60" required>
+        <label for="member-names">Member names</label><textarea id="member-names" name="members" rows="3" placeholder="Jai, Prince, Khyati" required></textarea>
+        <p class="field-hint">Separate names with commas. Include at least two different members.</p>
+        <p class="form-error hidden" id="group-form-error" role="alert"></p>
+        <div class="modal-actions"><button class="button button-ghost" id="cancel-modal" type="button">Cancel</button><button class="button button-primary" id="create-group-button" type="submit">Create group</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="expense-modal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="expense-modal-title">
+      <div class="modal-heading"><div><p class="eyebrow">ADD TO THE LEDGER</p><h2 id="expense-modal-title">Add an expense</h2><p class="modal-subtitle">Record a shared cost and split it equally.</p></div><button class="icon-button close-button" id="close-expense-modal" type="button" aria-label="Close dialog">×</button></div>
+      <form id="expense-form">
+        <label for="expense-title">Expense name</label><input id="expense-title" name="title" type="text" placeholder="e.g. Dinner, cab, groceries" maxlength="80" required>
+        <div class="form-row"><div><label for="expense-amount">Amount (₹)</label><input id="expense-amount" name="amount" type="number" min="0.01" step="0.01" placeholder="850.00" required></div><div><label for="expense-group">Group</label><select id="expense-group" name="groupId" required></select></div></div>
+        <label for="expense-payer">Paid by</label><select id="expense-payer" name="payer" required></select>
+        <p class="field-hint">The amount will be split equally among all members of the selected group.</p>
+        <p class="form-error hidden" id="expense-form-error" role="alert"></p>
+        <div class="modal-actions"><button class="button button-ghost" id="cancel-expense-modal" type="button">Cancel</button><button class="button button-primary" type="submit">Save expense</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div class="modal-overlay hidden" id="confirm-modal" aria-hidden="true">
+    <div class="modal modal-compact" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div class="modal-heading"><div><p class="eyebrow">PLEASE CONFIRM</p><h2 id="confirm-title">Delete this item?</h2><p class="modal-subtitle" id="confirm-message">This action cannot be undone.</p></div></div>
+      <div class="modal-actions"><button class="button button-ghost" id="confirm-cancel" type="button">Cancel</button><button class="button button-danger" id="confirm-accept" type="button">Delete</button></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
