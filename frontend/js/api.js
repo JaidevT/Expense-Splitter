@@ -24,7 +24,12 @@
     getExpenses: () => request("/api/expenses"),
     createExpense: input =>
       request("/api/expenses", { method: "POST", body: JSON.stringify(input) }),
+    updateExpense: (id, input) =>
+      request(`/api/expenses/${id}`, { method: "PUT", body: JSON.stringify(input) }),
     deleteExpense: id => request(`/api/expenses/${id}`, { method: "DELETE" }),
+
+    getSettlements: groupId =>
+      request(groupId ? `/api/settlements?groupId=${encodeURIComponent(groupId)}` : "/api/settlements"),
 
     clearDemoData: async () => {}
   };
